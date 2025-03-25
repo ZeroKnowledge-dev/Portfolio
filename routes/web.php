@@ -17,6 +17,7 @@ use App\Models\ProjectSection;
 use App\Models\ServiceSection;
 use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -30,7 +31,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-	return Inertia::render('Dashboard');
+	return Inertia::render('Dashboard', [
+		'user'   => User::where('id', Auth::id())->first(),
+		'appURL' => env('APP_URL'),
+	]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
